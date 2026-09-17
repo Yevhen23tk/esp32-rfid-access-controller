@@ -16,3 +16,18 @@ ota:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
+
+spi:
+  clk_pin: GPIO18
+  mosi_pin: GPIO23
+  miso_pin: GPIO19
+
+rc522_spi:
+  cs_pin: GPIO27
+  reset_pin: GPIO22
+  update_interval: 1s
+
+  on_tag:
+    then:
+      - lambda: |-
+          ESP_LOGI("rfid", "Tag scanned: %s", x.c_str());
