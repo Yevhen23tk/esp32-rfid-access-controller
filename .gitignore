@@ -1,0 +1,10 @@
+secrets.yaml
+.esphome/
+.pio/
+.pioenvs/
+.piolibdeps/
+__pycache__/
+*.pyc
+.vscode/
+.venv/
+esphome/.gitignore
