@@ -32,6 +32,10 @@ output:
     pin: GPIO26
     id: red_led
 
+  - platform: ledc
+    pin: GPIO14
+    id: buzzer
+
 script:
   - id: green_flash
     then:
@@ -44,6 +48,35 @@ script:
       - output.turn_on: red_led
       - delay: 2s
       - output.turn_off: red_led
+    
+  - id: granted_beep
+    then:
+      - output.turn_on: buzzer
+      - output.ledc.set_frequency:
+          id: buzzer
+          frequency: 2000Hz
+      - output.set_level:
+          id: buzzer
+          level: 50%
+      - delay: 150 ms
+      - output.turn_off: buzzer
+
+  - id: denied_beep
+    then:
+      - output.turn_on: buzzer
+      - output.ledc.set_frequency:
+          id: buzzer
+          frequency: 700Hz
+      - output.set_level:
+          id: buzzer
+          level: 50%
+      - delay: 150 ms
+      - output.turn_off: buzzer
+      - delay: 120 ms
+      - output.turn_on: buzzer
+      - delay: 150 ms
+      - output.turn_off: buzzer
+
 
 rc522_spi:
   cs_pin: GPIO27
@@ -60,9 +93,11 @@ rc522_spi:
 
             id(red_led).turn_off();
             id(green_flash).execute();
+            id(granted_beep).execute();
 
           } else {
             ESP_LOGW("access", "ACCESS DENIED");
             id(red_flash).execute();
             id(green_led).turn_off();
+            id(denied_beep).execute();
           }
