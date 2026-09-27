@@ -23,6 +23,28 @@ spi:
   mosi_pin: GPIO23
   miso_pin: GPIO19
 
+output:
+  - platform: gpio
+    pin: GPIO25
+    id: green_led
+
+  - platform: gpio
+    pin: GPIO26
+    id: red_led
+
+script:
+  - id: green_flash
+    then:
+      - output.turn_on: green_led
+      - delay: 2s
+      - output.turn_off: green_led
+
+  - id: red_flash
+    then:
+      - output.turn_on: red_led
+      - delay: 2s
+      - output.turn_off: red_led
+
 rc522_spi:
   cs_pin: GPIO27
   reset_pin: GPIO22
@@ -32,3 +54,15 @@ rc522_spi:
     then:
       - lambda: |-
           ESP_LOGI("rfid", "Tag scanned: %s", x.c_str());
+
+          if (x == "66-7D-C3-06") {
+            ESP_LOGI("access", "ACCESS GRANTED");
+
+            id(red_led).turn_off();
+            id(green_flash).execute();
+
+          } else {
+            ESP_LOGW("access", "ACCESS DENIED");
+            id(red_flash).execute();
+            id(green_led).turn_off();
+          }
