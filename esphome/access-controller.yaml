@@ -36,6 +36,11 @@ output:
     pin: GPIO14
     id: buzzer
 
+  - platform: ledc
+    pin: GPIO13
+    id: servo_pwm
+    frequency: 50 Hz
+
 script:
   - id: green_flash
     then:
@@ -76,7 +81,21 @@ script:
       - output.turn_on: buzzer
       - delay: 150 ms
       - output.turn_off: buzzer
+      
+  - id: unlock_door
+    then:
+      - servo.write:
+          id: door_servo
+          level: 40%
+      - delay: 3s
+      - servo.write:
+          id: door_servo
+          level: -40%
 
+servo:
+  - id: door_servo
+    output: servo_pwm
+    auto_detach_time: 1s
 
 rc522_spi:
   cs_pin: GPIO27
@@ -94,6 +113,7 @@ rc522_spi:
             id(red_led).turn_off();
             id(green_flash).execute();
             id(granted_beep).execute();
+            id(unlock_door).execute();
 
           } else {
             ESP_LOGW("access", "ACCESS DENIED");
