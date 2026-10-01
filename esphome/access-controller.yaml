@@ -137,3 +137,51 @@ rc522_spi:
             id(green_led).turn_off();
             id(denied_beep).execute();
           }
+
+button:
+  - platform: template
+    name: Test_Green_Led
+    id: button_template_1
+    on_press:
+      - then:
+          - script.execute: green_flash
+  - platform: template
+    name: Test_Red_Led
+    id: button_template_2
+    on_press:
+      - then:
+          - script.execute: red_flash
+  - platform: template
+    name: Open Door
+    id: button_template_3
+    on_press:
+      - then:
+          - script.execute: unlock_door
+  - platform: template
+    name: Granted Sound
+    id: button_template_4
+    on_press:
+      - then:
+          - script.execute: granted_beep
+  - platform: template
+    name: Denied Sound
+    id: button_template_5
+    on_press:
+      - then:
+          - button.press: button_template_5
+sensor:
+  - platform: wifi_signal
+    name: Wifi signal
+    id: sensor_wifi_signal_1
+    update_interval: 60s
+
+switch:
+  - platform: output
+    name: Greed_Led_On-off
+    output: green_led
+    id: switch_output_1
+
+  - platform: output
+    name: Red_Led_On-off
+    output: red_led
+    id: switch_output_2
