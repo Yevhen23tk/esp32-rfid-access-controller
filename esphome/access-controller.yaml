@@ -140,13 +140,13 @@ rc522_spi:
 
 button:
   - platform: template
-    name: Test_Green_Led
+    name: Green Led Test
     id: button_template_1
     on_press:
       - then:
           - script.execute: green_flash
   - platform: template
-    name: Test_Red_Led
+    name: Red Led Test
     id: button_template_2
     on_press:
       - then:
@@ -168,20 +168,20 @@ button:
     id: button_template_5
     on_press:
       - then:
-          - button.press: button_template_5
+          - script.execute: denied_beep
 sensor:
   - platform: wifi_signal
-    name: Wifi signal
+    name: WiFi signal
     id: sensor_wifi_signal_1
     update_interval: 60s
 
 switch:
   - platform: output
-    name: Greed_Led_On-off
+    name: Green LED On/Off
     output: green_led
     id: switch_output_1
 
   - platform: output
-    name: Red_Led_On-off
+    name: Red LED On/Off
     output: red_led
     id: switch_output_2
