@@ -168,7 +168,7 @@ button:
     id: button_template_5
     on_press:
       - then:
-          - button.press: button_template_5
+          - script.execute: denied_beep
 sensor:
   - platform: wifi_signal
     name: Wifi signal
@@ -177,11 +177,11 @@ sensor:
 
 switch:
   - platform: output
-    name: Greed_Led_On-off
+    name: Greed LED On/Off
     output: green_led
     id: switch_output_1
 
   - platform: output
-    name: Red_Led_On-off
+    name: Red LED On/Off
     output: red_led
     id: switch_output_2
